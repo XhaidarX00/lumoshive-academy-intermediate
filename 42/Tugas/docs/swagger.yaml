@@ -1,0 +1,378 @@
+basePath: /
+definitions:
+  models.Login:
+    properties:
+      email:
+        example: jane.smith@example.com
+        type: string
+      password:
+        example: securepassword
+        type: string
+    type: object
+  utils.ResponseFailed:
+    properties:
+      description:
+        type: string
+      errorCode:
+        type: string
+      success:
+        type: boolean
+    type: object
+  utils.ResponseSuccess:
+    properties:
+      data: {}
+      description:
+        type: string
+      success:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: darmi.ecommers@gmail.com
+    name: API Support
+    url: https://e-commers-darmi/
+  description: This is a sample server for a Swagger API.
+  license:
+    name: E-Commers Darmi
+    url: https://darmi.ecommers.com
+  termsOfService: http://example.com/terms/
+  title: Example API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      description: Login users and create token temporary.
+      parameters:
+      - description: Login object that needs to Login auth
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      responses:
+        "200":
+          description: All User
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      summary: Login User
+      tags:
+      - Users
+  /redeem/{voucher-type}:
+    get:
+      description: Retrieve a list of redeemed vouchers filtered by voucher type.
+      parameters:
+      - description: Voucher Type
+        in: path
+        name: voucher-type
+        required: true
+        type: string
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "200":
+          description: List of redeemed vouchers
+          schema:
+            items:
+              $ref: '#/definitions/utils.ResponseSuccess'
+            type: array
+        "400":
+          description: Invalid voucher type
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Get redeemed vouchers by type
+      tags:
+      - Redeem
+  /redeem/user/{id}/{voucher_id}:
+    get:
+      description: Redeem a specific voucher for a user using their ID and voucher
+        ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Voucher ID
+        in: path
+        name: voucher_id
+        required: true
+        type: string
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Redeem success response
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Redeem a voucher for a user
+      tags:
+      - Redeem
+  /voucher:
+    get:
+      description: Retrieve a list of all vouchers.
+      responses:
+        "200":
+          description: List of vouchers
+          schema:
+            items:
+              $ref: '#/definitions/utils.ResponseSuccess'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: List all vouchers
+      tags:
+      - Voucher
+    post:
+      description: Create a new voucher with the specified details.
+      parameters:
+      - description: Voucher data
+        in: body
+        name: voucher
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "201":
+          description: Voucher created
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "400":
+          description: Invalid voucher data
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Create a new voucher
+      tags:
+      - Voucher
+  /voucher/{id}:
+    delete:
+      description: Delete a voucher by its ID.
+      parameters:
+      - description: Voucher ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Voucher deleted
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "404":
+          description: Voucher not found
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Delete a voucher
+      tags:
+      - Voucher
+    put:
+      description: Update details of a voucher by its ID.
+      parameters:
+      - description: Voucher ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated voucher data
+        in: body
+        name: voucher
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Voucher updated
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "404":
+          description: Voucher not found
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Update a voucher
+      tags:
+      - Voucher
+  /voucher/point/{ratePoint}:
+    get:
+      description: Retrieve vouchers with a minimum specified rate point.
+      parameters:
+      - description: Minimum Rate Point
+        in: path
+        name: ratePoint
+        required: true
+        type: integer
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "200":
+          description: List of vouchers
+          schema:
+            items:
+              $ref: '#/definitions/utils.ResponseSuccess'
+            type: array
+        "400":
+          description: Invalid rate point
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Get vouchers by minimum rate point
+      tags:
+      - Voucher
+  /voucher/validate:
+    get:
+      description: Validate the provided voucher and return its status.
+      parameters:
+      - description: Authentication token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Unique user key
+        in: header
+        name: IDKey
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Validation result
+          schema:
+            $ref: '#/definitions/utils.ResponseSuccess'
+        "400":
+          description: Invalid voucher details
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.ResponseFailed'
+      security:
+      - TokenAuth: []
+      - IDKeyAuth: []
+      summary: Validate a voucher
+      tags:
+      - Voucher
+schemes:
+- http
+securityDefinitions:
+  IDKeyAuth:
+    in: header
+    name: IDKey
+    type: apiKey
+  TokenAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,587 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for a Swagger API.",
+        "title": "Example API",
+        "termsOfService": "http://example.com/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "https://e-commers-darmi/",
+            "email": "darmi.ecommers@gmail.com"
+        },
+        "license": {
+            "name": "E-Commers Darmi",
+            "url": "https://darmi.ecommers.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "Login users and create token temporary.",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login User",
+                "parameters": [
+                    {
+                        "description": "Login object that needs to Login auth",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All User",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/redeem/user/{id}/{voucher_id}": {
+            "get": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Redeem a specific voucher for a user using their ID and voucher ID.",
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem a voucher for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Voucher ID",
+                        "name": "voucher_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Redeem success response",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/redeem/{voucher-type}": {
+            "get": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve a list of redeemed vouchers filtered by voucher type.",
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Get redeemed vouchers by type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Voucher Type",
+                        "name": "voucher-type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of redeemed vouchers",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/utils.ResponseSuccess"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid voucher type",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/voucher": {
+            "get": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve a list of all vouchers.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "List all vouchers",
+                "responses": {
+                    "200": {
+                        "description": "List of vouchers",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/utils.ResponseSuccess"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Create a new voucher with the specified details.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Create a new voucher",
+                "parameters": [
+                    {
+                        "description": "Voucher data",
+                        "name": "voucher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Voucher created",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid voucher data",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/voucher/point/{ratePoint}": {
+            "get": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve vouchers with a minimum specified rate point.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Get vouchers by minimum rate point",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Minimum Rate Point",
+                        "name": "ratePoint",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of vouchers",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/utils.ResponseSuccess"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid rate point",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/voucher/validate": {
+            "get": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Validate the provided voucher and return its status.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Validate a voucher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validation result",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid voucher details",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        },
+        "/voucher/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Update details of a voucher by its ID.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Update a voucher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Voucher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated voucher data",
+                        "name": "voucher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voucher updated",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "TokenAuth": []
+                    },
+                    {
+                        "IDKeyAuth": []
+                    }
+                ],
+                "description": "Delete a voucher by its ID.",
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Delete a voucher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Voucher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unique user key",
+                        "name": "IDKey",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Voucher deleted",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Voucher not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseFailed"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "jane.smith@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "securepassword"
+                }
+            }
+        },
+        "utils.ResponseFailed": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "errorCode": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "utils.ResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "description": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "IDKeyAuth": {
+            "type": "apiKey",
+            "name": "IDKey",
+            "in": "header"
+        },
+        "TokenAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

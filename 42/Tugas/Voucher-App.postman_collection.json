@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "94467c8a-a486-4431-ab06-b64da1a20d8b",
+		"name": "Voucher-App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31738017"
+	},
+	"item": [
+		{
+			"name": "Get Voucher",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ID-KEY",
+						"value": "{{ID}}",
+						"type": "text"
+					},
+					{
+						"key": "TOKEN",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/voucher",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Voucher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"voucher_name\": \"50 Points Redemption\",\r\n  \"voucher_code\": \"REDEEM5000\",\r\n  \"voucher_type\": \"redeem_point\",\r\n  \"description\": \"Redeem 50 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 5000.0,\r\n  \"min_purchase\": 0.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-20T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Online Store\\\", \\\"Mobile App\\\"]\",\r\n  \"min_rate_point\": 50\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/voucher",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Voucher",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 3,\r\n  \"voucher_name\": \"555 Points Redemption\",\r\n  \"voucher_code\": \"REDEEM555\",\r\n  \"voucher_type\": \"redeem_point\",\r\n  \"description\": \"Redeem 555 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 0.0,\r\n  \"min_purchase\": 0.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-31T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Online Store\\\", \\\"Mobile App\\\"]\",\r\n  \"min_rate_point\": 555\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/voucher/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Voucher",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/voucher/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Voucher By Point",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/voucher/point/1000",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher",
+						"point",
+						"1000"
+					],
+					"query": [
+						{
+							"key": "ratePoint",
+							"value": "100",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reedem Point By User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/redeem/user/1/4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"redeem",
+						"user",
+						"1",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"Token\", jsonData.data.Token);\r",
+							"pm.environment.set(\"ID\", jsonData.data.ID);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ID-KEY",
+						"value": "CUSTOMER1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "TOKEN",
+						"value": "TOKEN_CUSTOMER_1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"jane.smith@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
