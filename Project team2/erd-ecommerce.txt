@@ -1,0 +1,82 @@
+create table if not exists users(
+	id SERIAL PRIMARY KEY,
+	name varchar(100) not null,
+	email varchar(100) unique,
+	password varchar(255) not null,
+	role varchar(20) check (role in( 'admin', 'customer')),
+	created_at TIMESTAMP default CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table if not exists banners(
+	id SERIAL PRIMARY KEY,
+	image VARCHAR(255) NOT NULL,
+	title VARCHAR(255) NOT NULL,
+	type JSONB DEFAULT '[]'::jsonb NOT NULL,
+	path_page VARCHAR(255) NOT null,
+	release_date date,
+	end_date date,
+	published bool default false,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table if not exists categories(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	variant JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    category_id INT  not null,
+    name VARCHAR(100) NOT NULL,
+    code_product VARCHAR(100) unique NOT NULL,
+    images JSONB DEFAULT '[]'::jsonb NOT NULL, -- Default nilai adalah array kosong
+    description TEXT,
+    stock int not null,
+    price DECIMAL(10, 2) NOT NULL,
+    published bool default false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT images_is_array CHECK (jsonb_typeof(images) = 'array') -- Pastikan images adalah array JSON
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    total_amount DECIMAL(10, 2) NOT NULL,
+    payment_method varchar(20) not null,
+    shipping_address VARCHAR(255) DEFAULT NULL,
+    status VARCHAR(20) CHECK (status IN ('pending', 'shipped', 'completed', 'canceled')) DEFAULT 'created', 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
+
+CREATE TABLE order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INT not null,
+    product_id INT not null,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    total DECIMAL(10, 2) NOT null
+);
+
+CREATE TABLE promotions (
+    id SERIAL PRIMARY KEY,
+    name varchar(255) not null,	
+    product_name JSONB DEFAULT '[]'::jsonb NOT NULL,
+    type  JSONB DEFAULT '[]'::jsonb NOT NULL,
+    description text,
+    discount  JSONB DEFAULT '[]'::jsonb NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    quota int default 0,
+    status bool default false,
+    published bool default false,
+    CHECK (end_date > start_date) -- Validasi bahwa tanggal akhir lebih besar dari tanggal mulai
+);
