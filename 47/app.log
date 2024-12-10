@@ -1,0 +1,37 @@
+{"L":"INFO","T":"2024-12-09T15:10:49.901+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-09T22:15:43.673+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-09T22:18:13.873+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-09T22:19:41.614+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T10:09:54.067+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:42:19.017+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:43:11.714+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:44:33.966+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:47:47.517+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:48:43.833+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:55:01.658+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T11:56:13.247+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T12:00:38.832+0700","M":"Logger initialized successfully"}
+{"L":"ERROR","T":"2024-12-10T12:00:42.467+0700","M":"Failed Generate Report","error":"failed to save Excel file: open reports\\report_20241210_120042.xlsx: The system cannot find the path specified."}
+{"L":"INFO","T":"2024-12-10T12:01:10.987+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T12:49:20.819+0700","M":"Logger initialized successfully"}
+{"L":"ERROR","T":"2024-12-10T12:49:37.609+0700","M":"Invalid minutes","error":"strconv.Atoi: parsing \"\": invalid syntax"}
+{"L":"ERROR","T":"2024-12-10T12:49:50.865+0700","M":"Invalid minutes","error":"strconv.Atoi: parsing \"\": invalid syntax"}
+{"L":"ERROR","T":"2024-12-10T12:50:41.113+0700","M":"Invalid minutes","error":"strconv.Atoi: parsing \"\": invalid syntax"}
+{"L":"INFO","T":"2024-12-10T12:51:46.638+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T12:58:19.021+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:19:09.922+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:21:11.297+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:25:18.079+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:28:34.206+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:30:56.083+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:36:42.556+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:39:40.121+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:39:59.604+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:44:27.022+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T13:58:20.972+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T14:01:09.931+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T14:11:22.876+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T14:12:26.168+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T14:13:40.681+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-10T14:14:18.429+0700","M":"Logger initialized successfully"}
+{"L":"ERROR","T":"2024-12-10T14:14:21.422+0700","M":"Invalid request body","error":"EOF"}

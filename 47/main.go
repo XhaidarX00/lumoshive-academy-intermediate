@@ -8,6 +8,7 @@ import (
 	"os/signal"
 
 	// _ "project_auth_jwt/docs"
+
 	"project_auth_jwt/infra"
 	"project_auth_jwt/routes"
 	"syscall"
@@ -20,6 +21,10 @@ func main() {
 	if err != nil {
 		log.Fatal("can't init service context %w", err)
 	}
+
+	// init cron
+	// cmd.CronJob(&ctx.Ctl)
+
 	r := routes.NewRoutes(*ctx)
 
 	srv := &http.Server{

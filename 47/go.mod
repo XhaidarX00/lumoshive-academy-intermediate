@@ -54,6 +54,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.4 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/swaggo/swag v1.8.12 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
