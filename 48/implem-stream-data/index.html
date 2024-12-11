@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+        
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f4f4f4;
+        }
+        
+        #chatInput {
+            margin-top: 20px;
+            display: flex;
+        }
+        
+        #chatInput input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        #chatInput button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #chatInput button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Order Status Dashboard</h1>
+    <canvas id="orderChart" width="800" height="400"></canvas>
+
+    <h2>Bot Conversations</h2>
+    <table id="chatTable">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Response</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Chat rows will be added dynamically -->
+        </tbody>
+    </table>
+
+    <div id="chatInput">
+        <input type="text" id="userQuestion" placeholder="Ask a question about an order...">
+        <button onclick="sendQuestion()">Send</button>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('orderChart').getContext('2d');
+        const orderChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Completed Orders',
+                    data: [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Order ID'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Amount'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Establish WebSocket connection
+        const socket = new WebSocket('ws://localhost:8080/ws');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+
+            // Handle order updates
+            if (data.type === 'order') {
+                const order = data.payload;
+                if (order.status === 'completed') {
+                    // Update chart with new order data
+                    orderChart.data.labels.push(order.id);
+                    orderChart.data.datasets[0].data.push(order.total_amount);
+
+                    // Limit to the last 10 completed orders
+                    if (orderChart.data.labels.length > 10) {
+                        orderChart.data.labels.shift();
+                        orderChart.data.datasets[0].data.shift();
+                    }
+
+                    orderChart.update();
+                }
+            }
+
+            // Handle chatbot responses
+            if (data.type === 'chat') {
+                const chatTable = document.getElementById('chatTable').querySelector('tbody');
+                const row = chatTable.insertRow();
+                const questionCell = row.insertCell(0);
+                const responseCell = row.insertCell(1);
+                questionCell.textContent = data.payload.question;
+                responseCell.textContent = data.payload.response;
+            }
+        };
+
+        socket.onopen = function() {
+            console.log('WebSocket connected');
+        };
+
+        socket.onclose = function() {
+            console.log('WebSocket disconnected');
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
+
+        // Chatbot functionality
+        function sendQuestion() {
+            const question = document.getElementById('userQuestion').value;
+            if (!question.trim()) {
+                return;
+            }
+
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                    type: 'chat',
+                    payload: {
+                        question
+                    }
+                }));
+            }
+
+            // Clear input field
+            document.getElementById('userQuestion').value = '';
+        }
+    </script>
+</body>
+
+</html>

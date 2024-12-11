@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Chat</title>
+</head>
+<body>
+    <div id="chatbox"></div>
+    <input id="username" type="text" placeholder="Enter your username..." autofocus>
+    <input id="input" type="text" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const input = document.getElementById('input');
+        const username = document.getElementById('username');
+        const ws = new WebSocket('ws://' + window.location.host + '/ws');
+
+        ws.onmessage = function(event) {
+            const msg = JSON.parse(event.data);
+            const message = document.createElement('p');
+            message.textContent = `${msg.username}: ${msg.message}`;
+            chatbox.appendChild(message);
+        };
+
+        function sendMessage() {
+            const msg = {
+                username: username.value,
+                message: input.value
+            };
+            ws.send(JSON.stringify(msg));
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
