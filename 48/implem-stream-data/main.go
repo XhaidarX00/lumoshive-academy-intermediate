@@ -119,7 +119,8 @@ func handleChat(msg Message) Message {
 	}
 
 	// Simple chatbot logic (replace this with actual AI/bot logic)
-	response := GetResponseAi(question, data)
+	// response := GetResponseAi(question, data)
+	response := fmt.Sprintf("Bot Response, Pertanyaan anda adalah : %s", question)
 
 	// Kembalikan pesan dengan struktur yang sesuai
 	return Message{
